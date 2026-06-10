@@ -21,7 +21,7 @@ class Driver(Base):
     penalty_seconds = Column(Integer, default=0)
     ride_count = Column(Integer, default=0)
     no_show_strikes = Column(Integer, default=0)
-    vehicle_info = Column(String, nullable=True) 
+    vehicle_info = Column(String, nullable=True)
     verification_info = Column(String, nullable=True)
     user = relationship("User")
 class Passenger(Base):
