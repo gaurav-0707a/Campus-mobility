@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides — Driver Registration</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .card {
+            background: #1e293b;
+            padding: 48px 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid #334155;
+        }
+        .logo { font-size: 32px; margin-bottom: 8px; }
+        h1 { color: #f1f5f9; font-size: 22px; margin-bottom: 4px; }
+        .subtitle { color: #64748b; font-size: 14px; margin-bottom: 36px; }
+        label {
+            display: block;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 6px;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 15px;
+            outline: none;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus { border-color: #3b82f6; }
+        textarea { resize: vertical; min-height: 72px; }
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 28px;
+        }
+        button:hover { background: #2563eb; }
+        .error {
+            background: #450a0a;
+            border: 1px solid #7f1d1d;
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+        .note {
+            color: #475569;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .login-link { color: #3b82f6; text-decoration: none; font-weight: 600; }
+        .login-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">🛺</div>
+        <h1>Driver Portal</h1>
+        <p class="subtitle">IIT Roorkee — Register as a Driver</p>
+
+        <form method="POST" action="/driver/register">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Your full name" required autocomplete="off">
+
+            <label>Phone Number</label>
+            <input type="tel" name="phone" placeholder="10 digit number" required autocomplete="off">
+
+            <label>4-Digit PIN</label>
+            <input type="password" name="pin" placeholder="Create a 4-digit PIN" maxlength="4" minlength="4" pattern="\d{4}" required autocomplete="off">
+
+            <label>Vehicle Information</label>
+            <textarea name="vinfo" placeholder="e.g. Auto-rickshaw, Yellow, DL 1AB 1234" required></textarea>
+
+            <label>Verification Info</label>
+            <textarea name="verinfo" placeholder="e.g. Driving license number, ID proof" required></textarea>
+
+            <button type="submit">Register →</button>
+        </form>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <p class="note">Already registered? <a href="/driver/login" class="login-link">Login here</a></p>
+    </div>
+</body>
+</html>

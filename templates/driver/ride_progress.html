@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides — Ride In Progress</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .logo { color: #f1f5f9; font-size: 20px; font-weight: 700; }
+        .name { color: #64748b; font-size: 14px; }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #1a1a00;
+            color: #facc15;
+            border: 1px solid #a16207;
+            margin-bottom: 24px;
+        }
+        .ride-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+        }
+        .passenger-label {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .passenger-name {
+            color: #f1f5f9;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        .route-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-top: 1px solid #334155;
+        }
+        .route-icon { font-size: 18px; }
+        .route-label { color: #64748b; font-size: 12px; }
+        .route-value { color: #f1f5f9; font-size: 14px; font-weight: 600; }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .btn-blue { background: #2563eb; color: white; }
+        .btn-blue:hover { background: #1d4ed8; }
+        .btn-red { background: #1e293b; color: #ef4444; border: 1px solid #ef4444; }
+        .btn-red:hover { background: #450a0a; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo">🛺 Campus Rides</div>
+        <div class="name">{{ driver_name }}</div>
+    </div>
+
+    <div class="badge">● RIDE IN PROGRESS</div>
+
+    <div class="ride-card">
+        <div class="passenger-label">Passenger</div>
+        <div class="passenger-name">{{ passenger_name }}</div>
+
+        <div class="route-row">
+            <span class="route-icon">📍</span>
+            <div>
+                <div class="route-label">Pickup</div>
+                <div class="route-value">{{ ride.pickup_zone }}</div>
+            </div>
+        </div>
+        <div class="route-row">
+            <span class="route-icon">🎯</span>
+            <div>
+                <div class="route-label">Destination</div>
+                <div class="route-value">{{ ride.destination_zone }}</div>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="/driver/complete/{{ ride.id }}">
+        <button class="btn btn-blue" type="submit">Mark Ride Complete ✓</button>
+    </form>
+
+    <form method="POST" action="/driver/cancel/{{ ride.id }}">
+        <button class="btn btn-red" type="submit">Cancel Ride (penalty applies)</button>
+    </form>
+</body>
+</html>

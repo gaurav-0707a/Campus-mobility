@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides — Home</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: #1e293b;
+            padding: 48px 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid #334155;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .logo { font-size: 22px; font-weight: 700; color: #f1f5f9; }
+        .user { color: #64748b; font-size: 13px; }
+        label {
+            display: block;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 6px;
+            margin-top: 20px;
+        }
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 15px;
+            outline: none;
+        }
+        select:focus { border-color: #3b82f6; }
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 28px;
+        }
+        button:hover { background: #2563eb; }
+        .error {
+            background: #450a0a;
+            border: 1px solid #7f1d1d;
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="logo">🛺 Campus Rides</div>
+            <div class="user">{{ user_name }}</div>
+        </div>
+
+        <form method="POST" action="/customer/request-ride">
+            <label>Pickup Location</label>
+            <select name="pickup_zone" required>
+                <option value="" disabled selected>Select pickup zone</option>
+                {% for zone in zones %}
+                <option value="{{ zone }}">{{ zone }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Destination</label>
+            <select name="destination_zone" required>
+                <option value="" disabled selected>Select destination</option>
+                {% for zone in zones %}
+                <option value="{{ zone }}">{{ zone }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Request Ride →</button>
+        </form>
+
+        <div class="error" id="error-msg"></div>
+        {% if error %}
+<div style="background:#450a0a;border:1px solid #7f1d1d;color:#fca5a5;
+padding:12px;border-radius:8px;font-size:14px;margin-top:16px;">
+    {{ error }}
+</div>
+{% endif %}
+    </div>
+</body>
+</html>

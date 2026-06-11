@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .logo { color: #f1f5f9; font-size: 20px; font-weight: 700; }
+        .name { color: #64748b; font-size: 14px; }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .green { background: #1a2d1a; color: #4ade80; border: 1px solid #166534; }
+        .yellow { background: #1a1a00; color: #facc15; border: 1px solid #a16207; }
+        .red { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 28px 24px;
+            margin-bottom: 16px;
+        }
+        .lbl { color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .big { color: #f1f5f9; font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+        .phone { color: #38bdf8; font-size: 14px; margin-bottom: 24px; }
+        .row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #334155; }
+        .rlbl { color: #64748b; font-size: 12px; }
+        .rval { color: #f1f5f9; font-size: 14px; font-weight: 600; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 10px; }
+        .btn-red { background: #dc2626; color: white; }
+        .btn-gray { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+        .note { color: #475569; font-size: 12px; text-align: center; margin-top: 8px; }
+        .done { text-align: center; color: #4ade80; font-size: 20px; font-weight: 700; padding: 40px 0; }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="logo">🛺 Campus Rides</div>
+    <div class="name">{{ user_name }}</div>
+</div>
+
+{% if ride.status == "pending" %}
+<div class="badge yellow">● Looking for a driver...</div>
+{% endif %}
+
+{% if ride.status == "assigned" %}
+<div class="badge green">● Driver Assigned</div>
+{% endif %}
+
+{% if ride.status == "in_progress" %}
+<div class="badge yellow">● Ride In Progress</div>
+{% endif %}
+
+{% if ride.status == "cancelled" %}
+<div class="badge red">● Cancelled</div>
+{% endif %}
+
+{% if ride.status == "pending" %}
+<div class="card">
+    <div class="lbl">Your Ride</div>
+    <div class="row">
+        <span>📍</span>
+        <div>
+            <div class="rlbl">Pickup</div>
+            <div class="rval">{{ ride.pickup_zone }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <span>🎯</span>
+        <div>
+            <div class="rlbl">Destination</div>
+            <div class="rval">{{ ride.destination_zone }}</div>
+        </div>
+    </div>
+    <div style="text-align:center; color:#64748b; padding: 24px 0;">
+        Searching for a driver nearby...
+    </div>
+</div>
+{% endif %}
+
+{% if ride.status == "assigned" or ride.status == "in_progress" %}
+<div class="card">
+    <div class="lbl">Your Driver</div>
+    <div class="big">{{ driver_name }} {% if driver_avg %}<span style="font-size:16px; color:#facc15;">⭐ {{ driver_avg }}</span>{% endif %}</div>
+    <div class="phone">📞 {{ driver_phone }}</div>
+    <div class="row">
+        <span>📍</span>
+        <div>
+            <div class="rlbl">Pickup</div>
+            <div class="rval">{{ ride.pickup_zone }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <span>🎯</span>
+        <div>
+            <div class="rlbl">Destination</div>
+            <div class="rval">{{ ride.destination_zone }}</div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if can_cancel and ride.status == "assigned" %}
+<form method="POST" action="/customer/cancel/{{ ride.id }}">
+    <button class="btn btn-red" type="submit">Cancel Ride</button>
+</form>
+<p class="note">Cancel option disappears after 60 seconds</p>
+{% endif %}
+
+{% if ride.status == "cancelled" %}
+<a href="/customer/home">
+    <button class="btn btn-gray">Book Another Ride</button>
+</a>
+{% endif %}
+
+{% if ride.status == "completed" %}
+<div class="done">✓ Ride Complete</div>
+
+{% if not ride.rating %}
+<div class="card">
+    <div class="lbl">Rate Your Ride</div>
+    <form method="POST" action="/customer/rate/{{ ride.id }}">
+        <div style="margin-bottom: 16px;">
+            <label style="color: #94a3b8; display: block; margin-bottom: 12px;">Rating (1-5 stars)</label>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 12px;">
+                {% for i in range(1, 6) %}
+                <label style="margin: 0; cursor: pointer;">
+                    <input type="radio" name="rating" value="{{ i }}" style="display: none;" required>
+                    <span style="font-size: 32px; opacity: 0.4; transition: opacity 0.2s;" data-rating="{{ i }}">⭐</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <textarea name="feedback" placeholder="Share your feedback..." style="width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #f1f5f9; resize: vertical; min-height: 80px; font-family: inherit; outline: none;"></textarea>
+        <button type="submit" class="btn" style="background: #2563eb; color: white; margin-top: 12px;">Submit Rating →</button>
+    </form>
+</div>
+<script>
+document.querySelectorAll('input[name="rating"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('[data-rating]').forEach(star => {
+            let rating = parseInt(star.getAttribute('data-rating'));
+            let selected = parseInt(this.value);
+            star.style.opacity = rating <= selected ? '1' : '0.4';
+        });
+    });
+});
+</script>
+{% else %}
+<div style="text-align:center; color:#4ade80; font-size:14px; margin-top:8px;">Thanks for your rating!</div>
+{% endif %}
+
+{% endif %}
+
+<script>
+    var s = "{{ ride.status }}";
+    if (s === "pending" || s === "assigned" || s === "in_progress") {
+        setTimeout(function() { location.reload(); }, 5000);
+    }
+</script>
+
+</body>
+</html>

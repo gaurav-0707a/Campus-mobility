@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides — Driver</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .logo { color: #f1f5f9; font-size: 20px; font-weight: 700; }
+        .name { color: #64748b; font-size: 14px; }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #1e293b;
+            color: #64748b;
+            border: 1px solid #334155;
+            margin-bottom: 32px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .stat {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-number { color: #f1f5f9; font-size: 32px; font-weight: 700; }
+        .stat-label { color: #64748b; font-size: 12px; margin-top: 4px; }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .card h2 { color: #f1f5f9; font-size: 16px; margin-bottom: 16px; }
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 15px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        .btn-green {
+            width: 100%;
+            padding: 13px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-green:hover { background: #15803d; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo">🛺 Campus Rides</div>
+        <div class="name">{{ driver_name }}</div>
+    </div>
+
+    <div class="badge">● OFFLINE</div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">{{ ride_count }}</div>
+            <div class="stat-label">Rides Today</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">{{ penalty_seconds // 60 }}</div>
+            <div class="stat-label">Penalty (mins)</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Go Online</h2>
+        <form method="POST" action="/driver/online">
+            <select name="zone" required>
+                <option value="" disabled selected>Select your current zone</option>
+                {% for zone in zones %}
+                <option value="{{ zone }}">{{ zone }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn-green" type="submit">Go Online →</button>
+        </form>
+    </div>
+</body>
+</html>

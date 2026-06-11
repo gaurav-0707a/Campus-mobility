@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 48px 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid #334155;
+        }
+
+        .logo {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            color: #f1f5f9;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 36px;
+        }
+
+        label {
+            display: block;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 6px;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 28px;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .note {
+            color: #475569;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">🛺</div>
+        <h1>Campus Rides</h1>
+        <p class="subtitle">IIT Roorkee — Passenger Portal</p>
+
+        <form method="POST" action="/customer/login">
+            <label>Your Name</label>
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="Enter your name"
+                required
+                autocomplete="off"
+            >
+
+            <label>Phone Number</label>
+            <input 
+                type="tel" 
+                name="phone" 
+                placeholder="10 digit number"
+                required
+                autocomplete="off"
+            >
+
+            <button type="submit">Continue →</button>
+        </form>
+
+        <p class="note">First time? You'll be registered automatically.</p>
+    </div>
+</body>
+</html>

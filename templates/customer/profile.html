@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campus Rides — My Profile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .logo { color: #f1f5f9; font-size: 20px; font-weight: 700; }
+        .back-link {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .profile-header {
+            text-align: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #334155;
+        }
+        .avatar { font-size: 48px; margin-bottom: 12px; }
+        .name { color: #f1f5f9; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .phone { color: #64748b; font-size: 14px; }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .stat-item {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-num { color: #f1f5f9; font-size: 28px; font-weight: 700; }
+        .stat-lbl { color: #64748b; font-size: 12px; margin-top: 6px; }
+        .section-title {
+            color: #f1f5f9;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-top: 24px;
+            border-top: 1px solid #334155;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #334155;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #64748b; font-size: 13px; }
+        .info-value { color: #f1f5f9; font-size: 14px; font-weight: 600; }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-green { background: #1a2d1a; color: #4ade80; border: 1px solid #166534; }
+        .badge-red { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
+        .warning-yellow {
+            background: #1a1a00;
+            border: 1px solid #a16207;
+            color: #facc15;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .warning-red {
+            background: #450a0a;
+            border: 1px solid #7f1d1d;
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .btn {
+            width: 100%;
+            padding: 13px;
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn:hover { background: #334155; color: #f1f5f9; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo">🛺 Campus Rides</div>
+        <a href="/customer/home" class="back-link">← Back</a>
+    </div>
+
+    <div class="card">
+        <div class="profile-header">
+            <div class="avatar">👤</div>
+            <div class="name">{{ user_name }}</div>
+            <div class="phone">{{ user_phone }}</div>
+        </div>
+
+        <div class="stat-grid" style="margin-top: 24px;">
+            <div class="stat-item">
+                <div class="stat-num">{{ total_done }}</div>
+                <div class="stat-lbl">Completed Rides</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">{{ total_cancelled }}</div>
+                <div class="stat-lbl">Cancelled Rides</div>
+            </div>
+        </div>
+
+        <div class="section-title">Account Status</div>
+
+        <div class="info-row">
+            <span class="info-label">Cancellation Flags</span>
+            <span class="info-value">{{ cancel_flags }} / 3</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Status</span>
+            {% if suspension_until %}
+                <span class="badge badge-red">● SUSPENDED</span>
+            {% else %}
+                <span class="badge badge-green">● ACTIVE</span>
+            {% endif %}
+        </div>
+
+        {% if suspension_until %}
+        <div class="warning-red">
+            Suspended until {{ suspension_until.strftime('%d %b %Y, %H:%M') }} UTC
+        </div>
+        {% elif cancel_flags >= 2 %}
+        <div class="warning-yellow">
+            ⚠️ {{ cancel_flags }}/3 flags — one more cancellation suspends your account for 24h
+        </div>
+        {% endif %}
+
+        <a href="/customer/home" class="btn">← Back to Home</a>
+    </div>
+</body>
+</html>
